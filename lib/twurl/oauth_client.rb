@@ -132,7 +132,9 @@ module Twurl
     def verify_has_username
       if username.nil? || username == ''
         oauth_response = fetch_verify_credentials
-        oauth_response.body =~ /"screen_name"\s*:\s*"(.*?)"/
+        json = oauth_response.body
+        json = json.sub(/"user"\s*:\s*\{[^\}]*\}\s*,?/, '')
+        json =~ /"screen_name"\s*:\s*"(.*?)"/
         @username = $1
       end
     end
